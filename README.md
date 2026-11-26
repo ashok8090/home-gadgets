@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>HOME GADGETS — Curated Smart Home Essentials</title>
+  <style>
+    :root {
+      --bg: #000000;
+      --surface: rgba(28, 28, 30, 0.78);
+      --surface-solid: #1c1c1e;
+      --card: rgba(36, 36, 40, 0.76);
+      --card-hover: rgba(48, 48, 54, 0.94);
+      --text: #f5f5f7;
+      --muted: #a1a1a6;
+      --border: rgba(255, 255, 255, 0.14);
+      --accent: #0a84ff;
+      --accent-soft: rgba(10, 132, 255, 0.18);
+      --sale: #ff453a;
+      --star-color: #ffffff;
+      --shadow: 0 12px 36px rgba(0, 0, 0, 0.55);
+      --radius-card: 22px;
+      --radius-pill: 9999px;
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    [data-theme="light"] {
+      --bg: #f2f2f7;
+      --surface: rgba(255, 255, 255, 0.78);
+      --surface-solid: #ffffff;
+      --card: rgba(255, 255, 255, 0.86);
+      --card-hover: #ffffff;
+      --text: #111111;
+      --muted: #636366;
+      --border: rgba(0, 0, 0, 0.1);
+      --accent: #007aff;
+      --accent-soft: rgba(0, 122, 255, 0.12);
+      --sale: #d70015;
+      --star-color: #1b365d;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; font-family: var(--font); }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      overflow-x: hidden;
+      padding-top: 84px;
+      padding-bottom: 104px;
+      transition: background-color 0.35s ease, color 0.35s ease;
+    }
+
+    #starfield {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .app-shell {
+      position: relative;
+      z-index: 1;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .top-nav-wrap {
+      position: fixed;
+      top: max(12px, env(safe-area-inset-top));
+      left: 0;
+      right: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: center;
+      padding: 0 14px;
+      pointer-events: none;
+    }
+
+    .top-cylinder {
+      pointer-events: auto;
+      width: 100%;
+      max-width: 880px;
+      height: 54px;
+      border-radius: var(--radius-pill);
+      background: var(--surface);
+      backdrop-filter: saturate(180%) blur(22px);
+      -webkit-backdrop-filter: saturate(180%) blur(22px);
+      border: 0.5px solid var(--border);
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px 0 14px;
+      gap: 8px;
+    }
+
+    .brand-link {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: var(--text);
+      line-height: 1.05;
+      cursor: pointer;
+    }
+
+    .brand-title {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .brand-arc {
+      width: 68px;
+      height: 6px;
+      margin-top: 1px;
+    }
+
+    .pill-btn {
+      height: 36px;
+      padding: 0 14px;
+      border-radius: var(--radius-pill);
+      border: 0.5px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: transform 0.16s ease, background 0.2s ease;
+    }
+
+    .pill-btn:active { transform: scale(0.95); }
+
+    .nav-right { display: flex; align-items: center; gap: 6px; }
+
+    .hero {
+      text-align: center;
+      padding: 28px 12px 22px;
+      animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .eyebrow-pill {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      margin-bottom: 14px;
+      border: 0.5px solid var(--border);
+    }
+
+    .hero h1 {
+      font-size: clamp(30px, 6.5vw, 46px);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin: 18px 0 28px;
+    }
+
+    .showcase-card {
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 20px 16px;
+      text-align: left;
+      color: var(--text);
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), background 0.22s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 132px;
+    }
+
+    .showcase-card:hover { transform: translateY(-3px); background: var(--card-hover); }
+    .showcase-card:active { transform: scale(0.97); }
+
+    .showcase-tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .showcase-card h2 {
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .showcase-sub {
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 22px 0 14px;
+    }
+
+    .section-title { font-size: 22px; font-weight: 700; letter-spacing: -0.015em; }
+
+    .sort-select {
+      height: 36px;
+      border-radius: var(--radius-pill);
+      border: 0.5px solid var(--border);
+      background: var(--surface-solid);
+      color: var(--text);
+      padding: 0 14px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .product-card {
+      background: var(--card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(22px) scale(0.98);
+      transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.25s ease;
+    }
+
+    .product-card.is-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .product-card.is-visible:hover {
+      transform: translateY(-4px) scale(1);
+      box-shadow: var(--shadow);
+    }
+
+    .thumb-wrap {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      background: rgba(128, 128, 128, 0.1);
+      overflow: hidden;
+    }
+
+    .thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+
+    .product-card:hover .thumb-wrap img { transform: scale(1.04); }
+
+    .badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--sale);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+    }
+
+    .card-body {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .prod-title {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .price-row { display: flex; align-items: baseline; gap: 7px; }
+    .price-now { font-size: 15px; font-weight: 700; color: var(--text); }
+    .price-was { font-size: 12px; color: var(--muted); text-decoration: line-through; }
+
+    .card-actions { display: flex; gap: 6px; margin-top: 4px; }
+
+    .btn-small {
+      flex: 1;
+      height: 34px;
+      border-radius: var(--radius-pill);
+      border: 0.5px solid var(--border);
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-del {
+      height: 34px;
+      padding: 0 10px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: var(--sale);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: none;
+    }
+
+    body.admin-active .btn-del { display: inline-flex; align-items: center; }
+
+    .detail-view {
+      background: var(--card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 18px;
+      margin-top: 12px;
+      box-shadow: var(--shadow);
+      animation: fadeUp 0.35s ease both;
+    }
+
+    .detail-img {
+      width: 100%;
+      max-height: 360px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: 16px;
+    }
+
+    .detail-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+    .detail-desc { color: var(--muted); font-size: 14px; line-height: 1.55; margin: 12px 0 18px; }
+
+    .cta-row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .btn-buy {
+      flex: 1;
+      min-width: 160px;
+      height: 46px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-sec {
+      height: 46px;
+      padding: 0 18px;
+      border-radius: var(--radius-pill);
+      border: 0.5px solid var(--border);
+      background: var(--surface-solid);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    footer {
+      margin-top: 42px;
+      padding: 20px 14px;
+      border-radius: var(--radius-card);
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .admin-stealth-a {
+      width: 26px;
+      height: 26px;
+      border-radius: var(--radius-pill);
+      border: 0.5px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      opacity: 0.65;
+    }
+
+    .admin-stealth-a:hover { opacity: 1; color: var(--text); }
+
+    .bottom-dock-wrap {
+      position: fixed;
+      bottom: max(12px, env(safe-area-inset-bottom));
+      left: 0;
+      right: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: center;
+      padding: 0 14px;
+      pointer-events: none;
+    }
+
+    .bottom-cylinder {
+      pointer-events: auto;
+      width: 100%;
+      max-width: 460px;
+      height: 56px;
+      border-radius: var(--radius-pill);
+      background: var(--surface);
+      backdrop-filter: saturate(180%) blur(22px);
+      -webkit-backdrop-filter: saturate(180%) blur(22px);
+      border: 0.5px solid var(--border);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 4px;
+    }
+
+    .dock-btn {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--font);
+      font-size: 11.5px;
+      font-weight: 600;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .dock-btn.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal-box {
+      width: 100%;
+      max-width: 440px;
+      background: var(--surface-solid);
+      border: 0.5px solid var(--border);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      max-height: 88dvh;
+      overflow-y: auto;
+    }
+
+    .modal-box h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+
+    .field { margin-bottom: 12px; }
+    .field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 0.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+    }
+
+    .admin-toolbar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: var(--accent-soft);
+      border: 0.5px solid var(--accent);
+      margin-bottom: 16px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    body.admin-active .admin-toolbar { display: flex; }
+
+    .hidden { display: none !important; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="starfield"></canvas>
+
+  <div class="top-nav-wrap">
+    <header class="top-cylinder">
+      <a class="brand-link" onclick="navigate('home')">
+        <span class="brand-title">HOME GADGETS</span>
+        <svg class="brand-arc" viewBox="0 0 80 8" fill="none">
+          <path d="M4 2C26 7 54 7 76 2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </a>
+
+      <div class="nav-right">
+        <button class="pill-btn" onclick="toggleTheme()" id="themeBtn">Light</button>
+        <button class="pill-btn" onclick="openModal('bagModal')" id="bagCountBtn">Bag (0)</button>
+      </div>
+    </header>
+  </div>
+
+  <main class="app-shell">
+    <div class="admin-toolbar" id="adminToolbar">
+      <span>Admin Mode Active</span>
+      <div style="display:flex;gap:8px;">
+        <button class="pill-btn" style="background:var(--accent);color:#fff;" onclick="openModal('addProductModal')">+ Add Product</button>
+        <button class="pill-btn" onclick="logoutAdmin()">Logout</button>
+      </div>
+    </div>
+
+    <section id="storeView">
+      <div class="hero">
+        <span class="eyebrow-pill">Curated Smart Home Essentials</span>
+        <h1>Smart Gadgets for Modern Living</h1>
+        <p>Thoughtfully selected everyday essentials and smart home upgrades for U.S. households.</p>
+      </div>
+
+      <div class="showcase-grid">
+        <button class="showcase-card" onclick="openCollection('New Arrivals')">
+          <div>
+            <div class="showcase-tag">Just Dropped</div>
+            <h2>New Arrivals</h2>
+          </div>
+          <p class="showcase-sub">Fresh smart & kitchen picks -&gt;</p>
+        </button>
+
+        <button class="showcase-card" onclick="openCollection('Best Seller')">
+          <div>
+            <div class="showcase-tag">Top Rated</div>
+            <h2>Best Seller</h2>
+          </div>
+          <p class="showcase-sub">Most loved customer favorites -&gt;</p>
+        </button>
+      </div>
+
+      <div class="section-head">
+        <h2 class="section-title" id="activeSectionTitle">Featured Gadgets</h2>
+        <div class="sort-bar">
+          <select class="sort-select" id="sortSelect" onchange="renderProducts()">
+            <option value="featured">Sort: Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="discount">Biggest Savings</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="product-grid" id="productGrid"></div>
+    </section>
+
+    <section id="productDetailView" class="detail-view hidden"></section>
+
+    <footer>
+      <span>© 2026 HOME GADGETS • United States (USD $)</span>
+      <button class="admin-stealth-a" title="Admin" onclick="handleAdminTrigger()">A</button>
+    </footer>
+  </main>
+
+  <div class="bottom-dock-wrap">
+    <nav class="bottom-cylinder">
+      <button class="dock-btn active" id="dock-home" onclick="navigate('home')">Home</button>
+      <button class="dock-btn" id="dock-new" onclick="openCollection('New Arrivals')">New Arrivals</button>
+      <button class="dock-btn" id="dock-best" onclick="openCollection('Best Seller')">Best Seller</button>
+      <button class="dock-btn" id="dock-bag" onclick="openModal('bagModal')">Bag</button>
+    </nav>
+  </div>
+
+  <div class="modal-backdrop" id="loginModal">
+    <div class="modal-box">
+      <h3>Admin Login</h3>
+      <div class="field">
+        <label for="adminPassInput">Password</label>
+        <input type="password" id="adminPassInput" placeholder="••••••••••••" />
+      </div>
+      <div class="cta-row">
+        <button class="btn-buy" onclick="submitAdminLogin()">Unlock</button>
+        <button class="btn-sec" onclick="closeModal('loginModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="addProductModal">
+    <div class="modal-box">
+      <h3>Add New Product</h3>
+      <div class="field">
+        <label>Product Name</label>
+        <input type="text" id="prodName" placeholder="e.g. Magnetic Wireless Desk Lamp" />
+      </div>
+      <div class="field">
+        <label>Category</label>
+        <select id="prodCategory">
+          <option value="Best Seller">Best Seller</option>
+          <option value="New Arrivals">New Arrivals</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Sale Price (USD $)</label>
+        <input type="number" step="0.01" id="prodPrice" placeholder="29.99" />
+      </div>
+      <div class="field">
+        <label>Original Price (USD $)</label>
+        <input type="number" step="0.01" id="prodWasPrice" placeholder="39.99" />
+      </div>
+      <div class="field">
+        <label>Image URL</label>
+        <input type="url" id="prodImage" placeholder="https://..." />
+      </div>
+      <div class="field">
+        <label>Buy / Redirect URL</label>
+        <input type="url" id="prodRedirect" placeholder="https://amazon.com/..." />
+      </div>
+      <div class="field">
+        <label>Product Details</label>
+        <textarea rows="3" id="prodDesc" placeholder="Key features and product details..."></textarea>
+      </div>
+      <div class="cta-row">
+        <button class="btn-buy" onclick="saveNewProduct()">Save Product</button>
+        <button class="btn-sec" onclick="closeModal('addProductModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="bagModal">
+    <div class="modal-box">
+      <h3>Your Bag</h3>
+      <div id="bagItemsList" style="margin:12px 0;"></div>
+      <button class="btn-sec" style="width:100%;" onclick="closeModal('bagModal')">Continue Browsing</button>
+    </div>
+  </div>
+
+  <script>
+    const ADMIN_SECRET = "Ashokkk1234";
+    const STORAGE_KEY = "home_gadgets_products_v1";
+    const BAG_KEY = "home_gadgets_bag_v1";
+
+    const DEFAULT_PRODUCTS = [
+      {
+        id: "hg-1",
+        title: "Multi-Purpose Cherry Tomato & Fruit Slicer",
+        category: "Best Seller",
+        price: 25.99,
+        wasPrice: 29.99,
+        
